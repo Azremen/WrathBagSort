@@ -41,6 +41,10 @@ follow the current source and this section.
 - The custom UI has 12 pages of 30 slots, a live all-page item-name search,
   stack-count overlays, zBag-style item click/drag behavior, native utility
   buttons, and native MoneyFrameTemplate counters (account/bonus/player gold).
+  Opening native `BagFrame` triggers the replacement UI; don't instruct the
+  user to manually open a second regular Backpack. The Item Shop Backpack may
+  remain open: `SwapSlots()` only issues indices above 60, and sort filters
+  tooltip-marked Item Shop items.
   Pages I-II are always available. Pages III-XII can be selected read-only;
   `Rent Page` calls `OpenTimeFlagStoreUpFrame("BagLet" .. page)`. Item
   interactions and sorting must reject unavailable pages.

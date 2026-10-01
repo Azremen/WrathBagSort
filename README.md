@@ -6,6 +6,8 @@ leaving Item Shop items and locked items untouched.
 
 The native **"sort items"** button (and zBag's sort buttons) are hooked to run
 this addon's sort instead of the game's default per-bag sort.
+Opening the native Backpack opens this addon's custom bag window in its place;
+you do not need to open a separate regular Backpack window manually.
 
 ## Why this exists
 
@@ -19,13 +21,12 @@ cautious and noisier in the chat log - that's intentional.
 
 An early version of this addon genuinely lost an item (35x Transport Rune) by
 moving it into the Item Shop Backpack instead of the regular Backpack. The
-sort path now offsets regular bag indices and refuses PickupBagItem indices
-1-60. Still keep the Item Shop Backpack and other extra bag/bank windows closed
-while sorting:
+current sort path addresses regular Backpack slots at indices 61+ and refuses
+PickupBagItem indices 1-60. **The Item Shop Backpack may remain open**; its
+items are identified and excluded from sorting. Before sorting:
 
-1. **Close the Item Shop Backpack** and any other extra bag/bank windows.
-2. Only the regular **Backpack** window should be open.
-3. Run `/sortbag preview` first and read the planned moves before committing.
+1. Use the custom bag window opened by the native Backpack toggle.
+2. Run `/sortbag preview` first (after enabling testing output) and review the plan.
 
 ## Commands
 
@@ -122,8 +123,9 @@ sort complete; 48 moves performed, 0 mismatches
 - Item Shop items and locked items are always left in place; they are
   never counted as "free" destination slots for other items either.
 - The separate native Item Shop Backpack window is not reproduced in the
-  custom bag UI. Keep it closed during sorting; its data/frame API has not
-  been identified safely.
+  custom bag UI, but it does not need to be closed during sorting: sorting
+  refuses PickupBagItem indices 1-60 and filters Item Shop items from targets.
+  Its separate display/data API has not been identified safely.
 - After renting a bag page, its tab may remain marked read-only until you
   switch pages or reopen the bag window.
 - Type-mode grouping is heuristic and based on tooltip text. If a localized

@@ -19,11 +19,12 @@ cautious and noisier in the chat log - that's intentional.
 
 ## ⚠️ Safety first
 
-An early version of this addon genuinely lost an item (35x Transport Rune) by
-moving it into the Item Shop Backpack instead of the regular Backpack. The
-current sort path addresses regular Backpack slots at indices 61+ and refuses
-PickupBagItem indices 1-60. **The Item Shop Backpack may remain open**; its
-items are identified and excluded from sorting. Before sorting:
+An early version routed 35x Transport Rune from transmuter output to the wrong
+bag/index destination because its `PickupBagItem` offset was incorrect. The
+runes were misplaced, not lost. The current sort path addresses regular
+Backpack slots at indices 61+ and refuses PickupBagItem indices 1-60. **The
+Item Shop Backpack may remain open**; its items are identified and excluded
+from sorting. Before sorting:
 
 1. Use the custom bag window opened by the native Backpack toggle.
 2. Run `/sortbag preview` first (after enabling testing output) and review the plan.
@@ -111,9 +112,8 @@ sort complete; 48 moves performed, 0 mismatches
 - If the final report shows mismatches, the addon will automatically re-read
   the bag and try another "correction round" (up to 8 times) before
   giving up. If it still reports mismatches, stop and inspect the inventory
-  with `/sortbag probe` before deciding whether to retry. Do not treat a
-  mismatch report as a guarantee that every item is safe; this client has
-  caused a real item loss in an earlier version of the addon.
+  with `/sortbag probe` before deciding whether to retry. An earlier offset bug
+  misplaced items, so do not ignore a mismatch report.
 
 ## Known limitations
 

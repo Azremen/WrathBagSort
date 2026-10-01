@@ -85,9 +85,9 @@ follow the current source and this section.
      through `ToPickupIndex()` and refuses any pickup/place index at or below
      60. Keep all sorting state in UI-slot space and never call
      `PickupBagItem` with raw slot numbers from the sort path.
-   - **This offset confusion caused a real item loss** (35x Transport Rune,
-     moved into the Item Shop Backpack and permanently lost - no admin/GM
-     access existed to recover it). Treat any PickupBagItem index-space
+   - **This offset confusion caused a real misplacement**: 35x Transport Rune
+     from transmuter output was routed outside the intended regular Backpack
+     location. The items were not lost. Treat any PickupBagItem index-space
      question as safety-critical, not just a bug.
    - Placing onto an OCCUPIED real-Backpack slot performs a genuine atomic
      swap (confirmed via testing) - no need to stage through an empty buffer
@@ -384,11 +384,10 @@ items with `/sortbag tooltip <slot>` before relying on `type` mode.
 
 ## Safety-critical reminders
 
-- A real item was permanently lost early in this addon's development (35x
-  Transport Rune, moved into the Item Shop Backpack due to the +60 offset
-  bug, before it was understood). There is no GM/admin access to recover
-  lost items on this server. Any change to index arithmetic, Item Shop
-  detection, or locked-item detection must be treated as safety-critical.
+- 35x Transport Rune from transmuter output was once routed to the wrong
+  inventory destination by the early +60 offset bug; the items were not lost.
+  Any change to index arithmetic, Item Shop detection, or locked-item
+  detection must still be treated as safety-critical.
 - Keep a working `/sortbag cancel` escape hatch, and keep `/sortbag preview`
   read-only so the planned moves can be reviewed before committing. (The
   two-step `sort` -> `sortconfirm` gate was removed at the user's request:

@@ -1,0 +1,280 @@
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/UI.xsd">
+
+    <EditBox name="WrathBagSortLogEditBoxTemplate" inherits="UIPanelEditBoxTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="660" y="20" />
+        </Size>
+    </EditBox>
+
+    <Frame name="WrathBagSortLogFrame" parent="UIParent" hidden="true" enableMouse="true">
+        <Size>
+            <AbsDimension x="700" y="760"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="10" y="10"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+
+        <Backdrop edgeFile="Interface\Tooltips\Tooltip-border" bgFile="Interface\Tooltips\Tooltip-Background">
+            <BackgroundInsets>
+                <AbsInset top="4" left="4" bottom="4" right="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="16"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+
+        <Layers>
+            <Layer>
+                <FontString name="$parentLabel" inherits="GameTitleFont" justifyH="LEFT" text="WrathBagSort Log - top box = all lines (Ctrl+A, Ctrl+C to copy)">
+                    <FontHeight>
+                        <AbsValue val="14" />
+                    </FontHeight>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="10" y="10"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+
+        <Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-8" y="8"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+
+            <Slider name="WrathBagSortLogScrollBar" inherits="UIPanelScrollBarHaveBackdropTemplate">
+                <Size>
+                    <AbsDimension x="20" y="690"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-8" y="40"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        this:SetValueStepMode("INT")
+                    </OnLoad>
+                    <OnValueChanged>
+                        UIPanelScrollBar_OnValueChanged(this, arg1)
+                        WrathBagSort.LogUpdate()
+                    </OnValueChanged>
+                </Scripts>
+            </Slider>
+
+            <EditBox name="WrathBagSortLogCopyAll" inherits="WrathBagSortLogEditBoxTemplate">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="10" y="38" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        if this.HighlightText then this:HighlightText() end
+                    </OnClick>
+                </Scripts>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage1" inherits="WrathBagSortLogEditBoxTemplate" id="1">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogCopyAll" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage2" inherits="WrathBagSortLogEditBoxTemplate" id="2">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage1" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage3" inherits="WrathBagSortLogEditBoxTemplate" id="3">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage2" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage4" inherits="WrathBagSortLogEditBoxTemplate" id="4">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage3" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage5" inherits="WrathBagSortLogEditBoxTemplate" id="5">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage4" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage6" inherits="WrathBagSortLogEditBoxTemplate" id="6">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage5" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage7" inherits="WrathBagSortLogEditBoxTemplate" id="7">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage6" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage8" inherits="WrathBagSortLogEditBoxTemplate" id="8">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage7" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage9" inherits="WrathBagSortLogEditBoxTemplate" id="9">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage8" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage10" inherits="WrathBagSortLogEditBoxTemplate" id="10">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage9" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage11" inherits="WrathBagSortLogEditBoxTemplate" id="11">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage10" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage12" inherits="WrathBagSortLogEditBoxTemplate" id="12">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage11" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage13" inherits="WrathBagSortLogEditBoxTemplate" id="13">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage12" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage14" inherits="WrathBagSortLogEditBoxTemplate" id="14">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage13" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage15" inherits="WrathBagSortLogEditBoxTemplate" id="15">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage14" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage16" inherits="WrathBagSortLogEditBoxTemplate" id="16">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage15" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage17" inherits="WrathBagSortLogEditBoxTemplate" id="17">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage16" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage18" inherits="WrathBagSortLogEditBoxTemplate" id="18">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage17" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage19" inherits="WrathBagSortLogEditBoxTemplate" id="19">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage18" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage20" inherits="WrathBagSortLogEditBoxTemplate" id="20">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage19" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage21" inherits="WrathBagSortLogEditBoxTemplate" id="21">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage20" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage22" inherits="WrathBagSortLogEditBoxTemplate" id="22">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage21" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage23" inherits="WrathBagSortLogEditBoxTemplate" id="23">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage22" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage24" inherits="WrathBagSortLogEditBoxTemplate" id="24">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage23" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage25" inherits="WrathBagSortLogEditBoxTemplate" id="25">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage24" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage26" inherits="WrathBagSortLogEditBoxTemplate" id="26">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage25" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage27" inherits="WrathBagSortLogEditBoxTemplate" id="27">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage26" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage28" inherits="WrathBagSortLogEditBoxTemplate" id="28">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage27" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage29" inherits="WrathBagSortLogEditBoxTemplate" id="29">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage28" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage30" inherits="WrathBagSortLogEditBoxTemplate" id="30">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage29" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage31" inherits="WrathBagSortLogEditBoxTemplate" id="31">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage30" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage32" inherits="WrathBagSortLogEditBoxTemplate" id="32">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage31" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage33" inherits="WrathBagSortLogEditBoxTemplate" id="33">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage32" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage34" inherits="WrathBagSortLogEditBoxTemplate" id="34">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage33" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+            <EditBox name="WrathBagSortLogMessage35" inherits="WrathBagSortLogEditBoxTemplate" id="35">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="WrathBagSortLogMessage34" relativePoint="BOTTOM" />
+                </Anchors>
+            </EditBox>
+        </Frames>
+
+        <Scripts>
+            <OnUpdate>
+                WrathBagSort.OnWorkerUpdate(arg1)
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+</Ui>

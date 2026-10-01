@@ -1,0 +1,422 @@
+<Ui xmlns="http://www.runewaker.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.runewaker.com/UI.xsd">
+
+    <Button name="WrathBagSortSlotTemplate" virtual="true">
+        <Size><AbsDimension x="42" y="42"/></Size>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentNormal" file="Interface\Buttons\QuickSlot-Normal">
+                    <Size><AbsDimension x="64" y="64"/></Size>
+                    <Anchors><Anchor point="CENTER"/></Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BORDER">
+                <Texture name="$parentIcon" hidden="true">
+                    <Size><AbsDimension x="40" y="40"/></Size>
+                    <Anchors><Anchor point="CENTER"/></Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="OVERLAY">
+                <FontString name="$parentCount" inherits="NumberFontNormal" weight="BOLD" justifyH="RIGHT" text="">
+                    <Anchors><Anchor point="BOTTOMRIGHT"><Offset><AbsDimension x="-3" y="-2"/></Offset></Anchor></Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <PushedTexture file="Interface\Buttons\QuickSlot-Depress"/>
+        <HighlightTexture file="Interface\Buttons\QuickSlot-Highlight" alphaMode="ADD"/>
+        <Scripts>
+            <OnLoad>WrathBagSort.OnBagSlotLoad(this)</OnLoad>
+            <OnClick>WrathBagSort.ItemOnClick(this,key)</OnClick>
+            <OnDragStart>WrathBagSort.ItemDragStart(this)</OnDragStart>
+            <OnReceiveDrag>WrathBagSort.DropOnSlot(this)</OnReceiveDrag>
+            <OnEvent>WrathBagSort.ItemOnEvent(this,event)</OnEvent>
+            <OnEnter>WrathBagSort.ItemOnEnter(this)</OnEnter>
+            <OnLeave>WrathBagSort.ItemOnLeave(this)</OnLeave>
+        </Scripts>
+    </Button>
+
+    <Frame name="WrathBagSortBagFrame" parent="UIParent" hidden="true" enableMouse="true">
+        <Size>
+            <AbsDimension x="390" y="440"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="20" y="20"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+
+        <Backdrop edgeFile="Interface\Tooltips\Tooltip-border" bgFile="Interface\Tooltips\Tooltip-Background">
+            <BackgroundInsets>
+                <AbsInset top="4" left="4" bottom="4" right="4"/>
+            </BackgroundInsets>
+            <TileSize>
+                <AbsValue val="16"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="16"/>
+            </EdgeSize>
+        </Backdrop>
+
+        <Layers>
+            <Layer>
+                <FontString name="$parentLabel" inherits="GameTitleFont" justifyH="LEFT" text="Backpack">
+                    <FontHeight>
+                        <AbsValue val="14"/>
+                    </FontHeight>
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parent" relativePoint="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="10" y="10"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentBagCount" inherits="GameFontLabel" justifyH="LEFT" text="Backpack (0/60)">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+                            <Offset><AbsDimension x="14" y="-12"/></Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentPageLabel" inherits="GameFontLabel" justifyH="RIGHT" text="Page I / XII">
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+                            <Offset><AbsDimension x="140" y="-12"/></Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentSearchLabel" inherits="GameFontLabel" justifyH="LEFT" text="Find">
+                    <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="18" y="68"/></Offset></Anchor></Anchors>
+                </FontString>
+                <FontString name="$parentSearchStatus" inherits="GameFontLabel" justifyH="RIGHT" text="">
+                    <Anchors><Anchor point="TOPRIGHT"><Offset><AbsDimension x="-16" y="68"/></Offset></Anchor></Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+
+        <Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButtonTemplate">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-8" y="8"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.CloseBag()</OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentSortButton" inherits="UIPanelButtonTemplate" text="Sort">
+                <Size>
+                    <AbsDimension x="62" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="10" y="36"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.Sort()</OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentPreviewButton" inherits="UIPanelButtonTemplate" text="Preview">
+                <Size>
+                    <AbsDimension x="62" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentSortButton" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="4" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.Preview()</OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentModeButton" inherits="UIPanelButtonTemplate" text="Mode: Name">
+                <Size>
+                    <AbsDimension x="90" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentPreviewButton" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="4" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.CycleMode()</OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentOrderButton" inherits="UIPanelButtonTemplate" text="Order: Asc">
+                <Size>
+                    <AbsDimension x="80" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentModeButton" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="4" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.ToggleOrder()</OnClick>
+                </Scripts>
+            </Button>
+
+            <EditBox name="$parentSearchBox" letters="50" historyLines="1" enableMouse="true">
+                <Size><AbsDimension x="198" y="22"/></Size>
+                <Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="54" y="62"/></Offset></Anchor></Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture name="$parentBorderLeft" file="Interface\ChatFrame\ChatEditBox-Border">
+                            <Size><AbsDimension x="16" y="22"/></Size>
+                            <Anchors><Anchor point="TOPLEFT"/></Anchors>
+                            <TexCoords left="0" right="0.25" top="0" bottom="0.6875"/>
+                        </Texture>
+                        <Texture name="$parentBorderRight" file="Interface\ChatFrame\ChatEditBox-Border">
+                            <Size><AbsDimension x="16" y="22"/></Size>
+                            <Anchors><Anchor point="TOPRIGHT"/></Anchors>
+                            <TexCoords left="0.75" right="1" top="0" bottom="0.6875"/>
+                        </Texture>
+                        <Texture file="Interface\ChatFrame\ChatEditBox-Border">
+                            <Size><AbsDimension x="0" y="22"/></Size>
+                            <Anchors>
+                                <Anchor point="LEFT" relativeTo="$parentBorderLeft" relativePoint="RIGHT"/>
+                                <Anchor point="RIGHT" relativeTo="$parentBorderRight" relativePoint="LEFT"/>
+                            </Anchors>
+                            <TexCoords left="0.25" right="0.75" top="0" bottom="0.6875"/>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <TextInsets><AbsInset left="8" right="4" top="4" bottom="0"/></TextInsets>
+                <FontString inherits="GameEditFont"/>
+                <Scripts>
+                    <OnTextChanged>WrathBagSort.SearchChanged(this)</OnTextChanged>
+                    <OnEnterPressed>this:ClearFocus()</OnEnterPressed>
+                    <OnEscapePressed>WrathBagSort.ClearSearch()</OnEscapePressed>
+                </Scripts>
+            </EditBox>
+
+            <Button name="$parentSearchClearButton" inherits="UIPanelButtonTemplate" text="X">
+                <Size><AbsDimension x="24" y="22"/></Size>
+                <Anchors><Anchor point="LEFT" relativeTo="$parentSearchBox" relativePoint="RIGHT"><Offset><AbsDimension x="4" y="0"/></Offset></Anchor></Anchors>
+                <Scripts><OnClick>WrathBagSort.ClearSearch()</OnClick></Scripts>
+            </Button>
+
+            <Button name="$parentGoodsButton">
+                <Size><AbsDimension x="24" y="24"/></Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT">
+                        <Offset><AbsDimension x="-126" y="8"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.OpenGoods()</OnClick>
+                    <OnEnter>GameTooltip:SetOwner(this, "ANCHOR_TOPLEFT", 4, 0); GameTooltip:SetText(OPENGOODS_TIPS);</OnEnter>
+                    <OnLeave>GameTooltip:Hide();</OnLeave>
+                </Scripts>
+                <NormalTexture file="Interface\BagFrame\GoodsButton-Normal"/>
+                <PushedTexture file="Interface\BagFrame\GoodsButton-Depress"/>
+                <DisabledTexture file="Interface\BagFrame\GoodsButton-Disable"/>
+                <HighlightTexture file="Interface\Buttons\PanelSmallButtonHighlight" alphaMode="ADD"/>
+            </Button>
+
+            <Button name="$parentPartnerButton">
+                <Size><AbsDimension x="24" y="24"/></Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentGoodsButton" relativePoint="LEFT">
+                        <Offset><AbsDimension x="-2" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.OpenPartner()</OnClick>
+                    <OnEnter>GameTooltip:SetOwner(this, "ANCHOR_TOPLEFT", 4, 0); GameTooltip:SetText(PARTNERFRAME_TITLE);</OnEnter>
+                    <OnLeave>GameTooltip:Hide();</OnLeave>
+                </Scripts>
+                <NormalTexture file="Interface\PartnerFrame\PartnerBut-Normal"/>
+                <PushedTexture file="Interface\PartnerFrame\PartnerBut-Depress"/>
+                <DisabledTexture file="Interface\PartnerFrame\PartnerBut-Disable"/>
+                <HighlightTexture file="Interface\Buttons\PanelSmallButtonHighlight" alphaMode="ADD"/>
+            </Button>
+
+            <Button name="$parentTransmuterButton">
+                <Size><AbsDimension x="24" y="24"/></Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentPartnerButton" relativePoint="LEFT">
+                        <Offset><AbsDimension x="-2" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.OpenTransmuter()</OnClick>
+                    <OnEnter>GameTooltip:SetOwner(this, "ANCHOR_TOPLEFT", 4, 0); GameTooltip:SetText(OPENMAGICBOX_TIPS);</OnEnter>
+                    <OnLeave>GameTooltip:Hide();</OnLeave>
+                </Scripts>
+                <NormalTexture file="Interface\BagFrame\MagicBox-Normal"/>
+                <PushedTexture file="Interface\BagFrame\MagicBox-Depress"/>
+                <DisabledTexture file="Interface\BagFrame\MagicBox-Disable"/>
+                <HighlightTexture file="Interface\Buttons\PanelSmallButtonHighlight" alphaMode="ADD"/>
+            </Button>
+
+            <Button name="$parentGarbageButton">
+                <Size><AbsDimension x="24" y="24"/></Size>
+                <Anchors>
+                    <Anchor point="RIGHT" relativeTo="$parentTransmuterButton" relativePoint="LEFT">
+                        <Offset><AbsDimension x="-2" y="0"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.OpenGarbage()</OnClick>
+                    <OnEnter>GameTooltip:SetOwner(this, "ANCHOR_TOPLEFT", 4, 0); GameTooltip:SetText(OPENGARBAGE_TIPS);</OnEnter>
+                    <OnLeave>GameTooltip:Hide();</OnLeave>
+                </Scripts>
+                <NormalTexture file="Interface\BagFrame\GarbageCan-Normal"/>
+                <PushedTexture file="Interface\BagFrame\GarbageCan-Depress"/>
+                <DisabledTexture file="Interface\BagFrame\GarbageCan-Disable"/>
+                <HighlightTexture file="Interface\Buttons\PanelSmallButtonHighlight" alphaMode="ADD"/>
+            </Button>
+
+            <Button name="$parentPageButton1" inherits="UIPanelButtonTemplate" id="1" text="I"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="20" y="88"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton2" inherits="UIPanelButtonTemplate" id="2" text="II"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton1" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton3" inherits="UIPanelButtonTemplate" id="3" text="III"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton2" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton4" inherits="UIPanelButtonTemplate" id="4" text="IV"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton3" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton5" inherits="UIPanelButtonTemplate" id="5" text="V"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton4" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton6" inherits="UIPanelButtonTemplate" id="6" text="VI"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton5" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton7" inherits="UIPanelButtonTemplate" id="7" text="VII"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="TOPLEFT" relativeTo="$parentPageButton1" relativePoint="BOTTOMLEFT"><Offset><AbsDimension x="0" y="3"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton8" inherits="UIPanelButtonTemplate" id="8" text="VIII"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton7" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton9" inherits="UIPanelButtonTemplate" id="9" text="IX"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton8" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton10" inherits="UIPanelButtonTemplate" id="10" text="X"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton9" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton11" inherits="UIPanelButtonTemplate" id="11" text="XI"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton10" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+            <Button name="$parentPageButton12" inherits="UIPanelButtonTemplate" id="12" text="XII"><Size><AbsDimension x="52" y="22"/></Size><Anchors><Anchor point="LEFT" relativeTo="$parentPageButton11" relativePoint="RIGHT"><Offset><AbsDimension x="3" y="0"/></Offset></Anchor></Anchors><Scripts><OnClick>WrathBagSort.SelectPage(this:GetID())</OnClick></Scripts></Button>
+
+            <Button name="$parentRentPageButton" inherits="UIPanelButtonTemplate" text="Rent Page" hidden="true">
+                <Size><AbsDimension x="120" y="24"/></Size>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" relativeTo="$parent" relativePoint="BOTTOMLEFT">
+                        <Offset><AbsDimension x="14" y="-38"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>WrathBagSort.RentCurrentPage()</OnClick>
+                    <OnEnter>GameTooltip:SetOwner(this, "ANCHOR_TOPLEFT", 4, 0); GameTooltip:SetText("Rent this page with diamonds");</OnEnter>
+                    <OnLeave>GameTooltip:Hide();</OnLeave>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentItem1" inherits="WrathBagSortSlotTemplate" id="1"/>
+            <Button name="$parentItem2" inherits="WrathBagSortSlotTemplate" id="2"/>
+            <Button name="$parentItem3" inherits="WrathBagSortSlotTemplate" id="3"/>
+            <Button name="$parentItem4" inherits="WrathBagSortSlotTemplate" id="4"/>
+            <Button name="$parentItem5" inherits="WrathBagSortSlotTemplate" id="5"/>
+            <Button name="$parentItem6" inherits="WrathBagSortSlotTemplate" id="6"/>
+            <Button name="$parentItem7" inherits="WrathBagSortSlotTemplate" id="7"/>
+            <Button name="$parentItem8" inherits="WrathBagSortSlotTemplate" id="8"/>
+            <Button name="$parentItem9" inherits="WrathBagSortSlotTemplate" id="9"/>
+            <Button name="$parentItem10" inherits="WrathBagSortSlotTemplate" id="10"/>
+            <Button name="$parentItem11" inherits="WrathBagSortSlotTemplate" id="11"/>
+            <Button name="$parentItem12" inherits="WrathBagSortSlotTemplate" id="12"/>
+            <Button name="$parentItem13" inherits="WrathBagSortSlotTemplate" id="13"/>
+            <Button name="$parentItem14" inherits="WrathBagSortSlotTemplate" id="14"/>
+            <Button name="$parentItem15" inherits="WrathBagSortSlotTemplate" id="15"/>
+            <Button name="$parentItem16" inherits="WrathBagSortSlotTemplate" id="16"/>
+            <Button name="$parentItem17" inherits="WrathBagSortSlotTemplate" id="17"/>
+            <Button name="$parentItem18" inherits="WrathBagSortSlotTemplate" id="18"/>
+            <Button name="$parentItem19" inherits="WrathBagSortSlotTemplate" id="19"/>
+            <Button name="$parentItem20" inherits="WrathBagSortSlotTemplate" id="20"/>
+            <Button name="$parentItem21" inherits="WrathBagSortSlotTemplate" id="21"/>
+            <Button name="$parentItem22" inherits="WrathBagSortSlotTemplate" id="22"/>
+            <Button name="$parentItem23" inherits="WrathBagSortSlotTemplate" id="23"/>
+            <Button name="$parentItem24" inherits="WrathBagSortSlotTemplate" id="24"/>
+            <Button name="$parentItem25" inherits="WrathBagSortSlotTemplate" id="25"/>
+            <Button name="$parentItem26" inherits="WrathBagSortSlotTemplate" id="26"/>
+            <Button name="$parentItem27" inherits="WrathBagSortSlotTemplate" id="27"/>
+            <Button name="$parentItem28" inherits="WrathBagSortSlotTemplate" id="28"/>
+            <Button name="$parentItem29" inherits="WrathBagSortSlotTemplate" id="29"/>
+            <Button name="$parentItem30" inherits="WrathBagSortSlotTemplate" id="30"/>
+
+            <Frame name="$parentAccountMoney" inherits="MoneyFrameTemplate" frameStrata="MEDIUM">
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" relativeTo="$parent" relativePoint="BOTTOMRIGHT">
+                        <Offset><AbsDimension x="-12" y="-40"/></Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        MoneyFrameTemplate_OnLoad(this)
+                        MoneyFrameTemplate_SetMode(this, "account")
+                        MoneyFrameTemplate_SetType(this, "PLAYER")
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentBonusMoney" inherits="MoneyFrameTemplate">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentAccountMoney" relativePoint="BOTTOMRIGHT"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        MoneyFrameTemplate_OnLoad(this)
+                        MoneyFrameTemplate_SetMode(this, "bonus")
+                        MoneyFrameTemplate_SetType(this, "PLAYER")
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+            <Frame name="$parentGoldMoney" inherits="MoneyFrameTemplate">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentBonusMoney" relativePoint="BOTTOMRIGHT"/>
+                </Anchors>
+                <Scripts>
+                    <OnLoad>
+                        MoneyFrameTemplate_OnLoad(this)
+                        MoneyFrameTemplate_SetType(this, "PLAYER")
+                    </OnLoad>
+                </Scripts>
+            </Frame>
+        </Frames>
+
+        <Scripts>
+            <OnLoad>
+                WrathBagSort.OnBagFrameLoad()
+            </OnLoad>
+            <OnShow>
+                WrathBagSort.RefreshBagGrid()
+                WrathBagSort.UpdateBagButtons()
+                WrathBagSort.UpdatePageButtons()
+            </OnShow>
+            <OnMouseDown>
+                this:StartMoving("TOPLEFT")
+            </OnMouseDown>
+            <OnMouseUp>
+                this:StopMovingOrSizing()
+            </OnMouseUp>
+        </Scripts>
+    </Frame>
+
+    <!-- Always-shown handler frame: watches the native BagFrame so our custom
+         bag window can replace it (same approach zBag uses). -->
+    <Frame name="WrathBagSortHandlerFrame" parent="UIParent">
+        <Size>
+            <AbsDimension x="1" y="1"/>
+        </Size>
+        <Anchors>
+            <Anchor point="BOTTOMRIGHT">
+                <Offset>
+                    <AbsDimension x="10" y="10"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Scripts>
+            <OnUpdate>
+                WrathBagSort.HandlerOnUpdate()
+            </OnUpdate>
+        </Scripts>
+    </Frame>
+</Ui>

@@ -1,0 +1,8 @@
+## Title: WrathBagSort
+## Notes: Configurable character bag sorting probe
+## Author: Azremen
+
+WrathBagSort.lua
+WrathBagSort.xml
+WrathBagSortLog.xml
+WrathBagSortBag.xml

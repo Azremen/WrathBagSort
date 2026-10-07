@@ -76,7 +76,8 @@ matching page opens automatically. Press Escape or click `X` to clear the search
 Hovering an item shows its tooltip. Left-click picks up an item, right-click
 uses it, Shift-click links/splits stacks, Ctrl-click opens the item preview,
 and drag-and-drop moves items between bag slots. Stack quantities appear at
-the lower-right of each icon. Item interactions only act on regular Backpack
+the lower-right of each icon, with active item cooldowns overlaid on the icon.
+Item interactions only act on regular Backpack
 indices (61+); Item Shop Backpack indices 1-60 are refused. The lower-right
 footer also shows account diamonds, bonus/ruby currency, and gold, matching
 the native zBag money frames.

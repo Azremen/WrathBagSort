@@ -1239,6 +1239,7 @@ local BagSearchMatchCount = 0
 local BagGridButtons = {}   -- slot -> button
 local BagGridIcons = {}     -- slot -> icon texture
 local BagGridCounts = {}    -- slot -> stack-count FontString
+local BagGridCooldowns = {} -- slot -> cooldown frame
 local BagSlotByButton = {}  -- button name -> slot
 
 local function CreateBagGrid()
@@ -1264,11 +1265,13 @@ function WrathBagSort.OnBagSlotLoad(button)
     button:SetMouseEnable(true)
     button:RegisterForClicks("LeftButton", "RightButton")
     button:RegisterEvent("BAG_ITEM_UPDATE")
+    button:RegisterEvent("BAG_UPDATE_COOLDOWN")
 
     local name = button:GetName()
     BagGridButtons[slot] = button
     BagGridIcons[slot] = _G[name .. "Icon"]
     BagGridCounts[slot] = _G[name .. "Count"]
+    BagGridCooldowns[slot] = _G[name .. "Cooldown"]
     BagSlotByButton[name] = slot
 end
 
@@ -1289,6 +1292,7 @@ function WrathBagSort.RefreshBagSlot(localSlot)
     local button = BagGridButtons[localSlot]
     local icon = BagGridIcons[localSlot]
     local countText = BagGridCounts[localSlot]
+    local cooldown = BagGridCooldowns[localSlot]
     if button and icon then
         local slot = (BagCurrentPage - 1) * BAG_PAGE_SIZE + localSlot
         local itemIndex, iconPath, _, itemCount, locked = GetBagItemInfo(slot)
@@ -1305,6 +1309,18 @@ function WrathBagSort.RefreshBagSlot(localSlot)
                 countText:SetText(tostring(itemCount))
             else
                 countText:SetText("")
+            end
+        end
+        if cooldown and type(CooldownFrame_SetTime) == "function" then
+            if iconPath and iconPath ~= "" and itemIndex and itemIndex > 60 and type(GetBagItemCooldown) == "function" then
+                local ok, duration, remaining = pcall(GetBagItemCooldown, itemIndex)
+                if ok then
+                    CooldownFrame_SetTime(cooldown, duration or 0, remaining or 0)
+                else
+                    CooldownFrame_SetTime(cooldown, 0, 0)
+                end
+            else
+                CooldownFrame_SetTime(cooldown, 0, 0)
             end
         end
         if IsFlagSet(locked) then
@@ -1437,6 +1453,11 @@ end
 
 function WrathBagSort.ItemOnEvent(button, event)
     if event == "BAG_ITEM_UPDATE" and button.index == arg1 then
+        local localSlot = BagSlotByButton[button:GetName()]
+        if localSlot then
+            WrathBagSort.RefreshBagSlot(localSlot)
+        end
+    elseif event == "BAG_UPDATE_COOLDOWN" then
         local localSlot = BagSlotByButton[button:GetName()]
         if localSlot then
             WrathBagSort.RefreshBagSlot(localSlot)

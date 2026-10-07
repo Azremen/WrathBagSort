@@ -202,6 +202,9 @@ follow the current source and this section.
   empty/single items. Keep count text as an XML child of the slot button so
   it draws above the icon; this client has no verified
   `CreateUIComponent("FontString", ...)` usage.
+- Each XML slot also owns a `CooldownFrameTemplate`. Refresh cooldown state
+  from `GetBagItemCooldown(itemIndex)` via `CooldownFrame_SetTime`, and listen
+  for `BAG_UPDATE_COOLDOWN` as well as `BAG_ITEM_UPDATE`.
 - Keep interaction semantics aligned with zBag: left-click picks up,
   right-click calls `UseBagItem`, Shift-click links/splits stacks,
   Ctrl-click opens item preview, and drag/drop calls `PickupBagItem` on the

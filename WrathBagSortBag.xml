@@ -23,6 +23,12 @@
         </Layers>
         <PushedTexture file="Interface\Buttons\QuickSlot-Depress"/>
         <HighlightTexture file="Interface\Buttons\QuickSlot-Highlight" alphaMode="ADD"/>
+        <Frames>
+            <Frame name="$parentCooldown" inherits="CooldownFrameTemplate">
+                <Size><AbsDimension x="42" y="42"/></Size>
+                <Anchors><Anchor point="CENTER"/></Anchors>
+            </Frame>
+        </Frames>
         <Scripts>
             <OnLoad>WrathBagSort.OnBagSlotLoad(this)</OnLoad>
             <OnClick>WrathBagSort.ItemOnClick(this,key)</OnClick>

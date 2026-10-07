@@ -1575,6 +1575,12 @@ function WrathBagSort.ItemOnLeave(button)
 end
 
 function WrathBagSort.Sort()
+    if SortState then
+        local state = SortState
+        SortState = nil
+        RestoreFrameVisibility(state)
+        Print("previous sort cancelled; starting a new sort")
+    end
     ExecuteSort()
 end
 

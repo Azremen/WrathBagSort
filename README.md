@@ -141,8 +141,8 @@ sort complete; 48 moves performed, 0 mismatches
   `.xml` files - see AGENTS.md for why).
 - `WrathBagSort.lua` - all sorting logic and slash command handling.
 - `WrathBagSort.xml` - minimal addon shell.
-- `WrathBagSortLog.xml` - the copyable log window; also hosts the `OnUpdate`
-  script that paces sorting (see AGENTS.md).
+- `WrathBagSortLog.xml` - the copyable log window. It is not used as a hidden
+  worker; the always-visible handler in `WrathBagSortBag.xml` drives pacing.
 
 For the full list of client-specific quirks, past bugs, and why the code is
 structured the way it is, see [AGENTS.md](AGENTS.md).

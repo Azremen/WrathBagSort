@@ -38,6 +38,10 @@ follow the current source and this section.
   there are at most `MAX_RETRY_PASSES = 3` per round and
   `MAX_CORRECTION_ROUNDS = 8`. These are empirical mitigations, not engine
   guarantees. Moves are optimistic until the delayed end-of-round check.
+- Sort OnUpdate pacing runs from the always-visible 1x1
+  `WrathBagSortHandlerFrame` in `WrathBagSortBag.xml`, not the interactive log
+  window. Never show the log frame invisibly as a worker; its many EditBoxes
+  remain mouse/keyboard active even at alpha 0 and create ghost input rows.
 - The custom UI has 12 pages of 30 slots, a live all-page item-name search,
   stack-count overlays, zBag-style item click/drag behavior, native utility
   buttons, and native MoneyFrameTemplate counters (account/bonus/player gold).
@@ -53,10 +57,8 @@ follow the current source and this section.
   refresh; there is no confirmed rental-complete event hook yet. The separate
   native Item Shop Backpack window is not reproduced in the custom grid because
   its frame/data API has not been identified safely.
-- Known error cleanup gap: if an unexpected Lua exception escapes the paced
-  worker, its pcall wrapper clears `SortState` but does not currently restore
-  the log frame's alpha/visibility. If touching this code, restore visibility
-  from the saved sort state before clearing it.
+- Worker errors are pcall-wrapped; the error path clears `SortState` and keeps
+  the handler frame visible so OnUpdate can continue serving bag replacement.
 
 ## Confirmed client quirks (do not re-discover these the hard way)
 
@@ -109,10 +111,12 @@ follow the current source and this section.
    every other installed addon: none of them ever call `:SetScript(` from
    Lua, only via XML `<Scripts>` blocks. **Script handlers (OnUpdate, OnEvent,
    OnClick, etc.) can only be declared in XML at frame-definition time.** This
-   addon's pacing relies on `WrathBagSortLog.xml` declaring:
+     addon's pacing relies on `WrathBagSortBag.xml` declaring on the always-
+     visible `WrathBagSortHandlerFrame`:
    ```xml
    <Scripts>
        <OnUpdate>
+         WrathBagSort.HandlerOnUpdate()
            WrathBagSort.OnWorkerUpdate(arg1)
        </OnUpdate>
    </Scripts>
@@ -120,13 +124,10 @@ follow the current source and this section.
    and the Lua handler being exposed as the **global** `WrathBagSort.OnWorkerUpdate`
    (not a local), since XML can only call globals/table members.
 
-7. **Hidden frames do NOT receive OnUpdate ticks.** A frame must be
-   `:Show()`n to get OnUpdate pacing working. This addon shows
-   `WrathBagSortLogFrame` for the duration of a sort and restores its prior
-   visibility afterward. To avoid an annoying visible open/close flicker when
-   the user didn't ask to see the log, it's shown with `SetAlpha(0)` when
-   WrathBagSort itself is the one auto-showing it (alpha is restored to 1
-   before hiding again, and never touched if the user had it open manually).
+7. **Hidden frames do NOT receive OnUpdate ticks.** Pacing and native-bag
+  replacement run on the always-visible 1x1 `WrathBagSortHandlerFrame`.
+  `WrathBagSortLogFrame` is never shown for sorting; it contains interactive
+  EditBoxes and must only be shown when the user requests `/sortbag log`.
 
 8. **The `.toc` load order matters**: `WrathBagSort.lua` must load BEFORE the
    `.xml` files. Reordering this (XML before Lua) **crashed the client**,

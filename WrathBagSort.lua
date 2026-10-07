@@ -808,12 +808,9 @@ local function GetElapsedArg(a, b)
 end
 
 local function RestoreFrameVisibility(state)
-    if state and not state.wasVisible then
-        local logFrame = _G["WrathBagSortLogFrame"]
-        if logFrame then
-            pcall(logFrame.SetAlpha, logFrame, 1)
-            logFrame:Hide()
-        end
+    local workerFrame = _G["WrathBagSortHandlerFrame"]
+    if workerFrame and not workerFrame:IsVisible() then
+        workerFrame:Show()
     end
 end
 
@@ -1054,18 +1051,20 @@ end
 -- Exposed on the WrathBagSort table (not local) because this client only
 -- supports attaching script handlers via XML <Scripts> blocks - calling
 -- frame:SetScript("OnUpdate", ...) from Lua errors with "attempt to call
--- method 'SetScript' (a nil value)". WrathBagSortLog.xml's OnUpdate script
--- calls WrathBagSort.OnWorkerUpdate(arg1) directly instead.
+-- method 'SetScript' (a nil value)". WrathBagSortBag.xml's always-visible
+-- handler frame calls WrathBagSort.OnWorkerUpdate(arg1).
 function WrathBagSort.OnWorkerUpdate(a, b)
     local ok, err = pcall(OnWorkerUpdateInner, a, b)
     if not ok then
+        local state = SortState
         SortState = nil
+        RestoreFrameVisibility(state)
         Print("sort error (caught in OnUpdate): " .. tostring(err))
     end
 end
 
 local function GetWorkerFrame()
-    return _G["WrathBagSortLogFrame"]
+    return _G["WrathBagSortHandlerFrame"]
 end
 
 local function ExecuteSortInner()
@@ -1085,15 +1084,9 @@ local function ExecuteSortInner()
         return
     end
 
-    -- Hidden frames don't appear to receive OnUpdate ticks on this client, so
-    -- show the log window for the duration of the sort (restored afterward).
-    -- SetAlpha(0) keeps it visually invisible (no open/close flicker) while
-    -- still "shown" so OnUpdate keeps firing; /sortbag log still works
-    -- normally afterward since alpha is restored before hiding again.
     local wasVisible = workerFrame:IsVisible()
     if not wasVisible then
         workerFrame:Show()
-        pcall(workerFrame.SetAlpha, workerFrame, 0)
     end
 
     StartSortRound(wasVisible, 0, 0)
@@ -1106,7 +1099,9 @@ end
 local function ExecuteSort()
     local ok, err = pcall(ExecuteSortInner)
     if not ok then
+        local state = SortState
         SortState = nil
+        RestoreFrameVisibility(state)
         Print("sort error (caught): " .. tostring(err))
     end
 end
@@ -1192,17 +1187,6 @@ end
 function WrathBagSort.ToggleLog()
     if not WrathBagSortLogFrame then
         Print("log window is unavailable (WrathBagSortLogFrame not found)")
-        return
-    end
-
-    -- While a sort is in progress, the frame may already be Shown (but
-    -- invisible via alpha=0) purely to keep OnUpdate ticking - Hide()ing it
-    -- here would stop the sort. Just make it visible instead of toggling.
-    if SortState then
-        WrathBagSortLogFrame:Show()
-        pcall(WrathBagSortLogFrame.SetAlpha, WrathBagSortLogFrame, 1)
-        WrathBagSortLogScrollBar:SetValue(WrathBagSortLogScrollBar:GetMaxValue())
-        WrathBagSort.LogUpdate()
         return
     end
 
